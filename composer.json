@@ -1,9 +1,32 @@
 {
+  "name": "devchen-org/swoole-im",
+  "description": "基于 Swoole(WebSocket) 实现简易IM.",
+  "keywords": [
+    "swoole",
+    "websock",
+    "php"
+  ],
+  "homepage": "https://github.com/devchen-org/swoole-im",
+  "authors": [
+    {
+      "name": "Chen Yang",
+      "email": "devchen.org@outlook.com",
+      "homepage": "https://devchen.org"
+    }
+  ],
+  "license": "MIT",
+  "type": "library",
   "require": {
     "symfony/console": "^4.1",
-    "league/event": "^2.1"
+    "league/event": "^2.1",
+    "hassankhan/config": "^2.0"
   },
   "require-dev": {
     "eaglewu/swoole-ide-helper": "dev-master"
+  },
+  "autoload": {
+    "psr-4": {
+      "DevChen\\SwooleIM\\": "src"
+    }
   }
 }
