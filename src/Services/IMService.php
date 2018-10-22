@@ -40,7 +40,12 @@ class IMService
         $this->config = Config::all();
         $this->host = $this->config['host'];
         $this->port = $this->config['port'];
-        $this->pid = file_get_contents(Config::get('pid_file'));
+        $pid_file = $this->config['pid_file'];
+
+        if (!file_exists($pid_file)) {
+            touch($pid_file);
+        }
+        $this->pid = intval(file_get_contents($pid_file));
 
     }
 
@@ -58,16 +63,6 @@ class IMService
         $this->swooleWebSocketServer->on('close', [$this, 'close']);
 
         return $this->swooleWebSocketServer->start();
-    }
-
-    public function reload()
-    {
-
-    }
-
-    public function stop()
-    {
-        $this->swooleWebSocketServer->stop();
     }
 
     public function open(swoole_websocket_server $swooleWebSocketServer, $request)
@@ -93,8 +88,33 @@ class IMService
     /**
      * @return bool
      */
+    public function reload()
+    {
+        if (empty($this->pid)) {
+            return false;
+        }
+        return swoole_process::kill($this->pid, SIGUSR1);
+    }
+
+    /**
+     * @return bool
+     */
+    public function stop()
+    {
+        if (empty($this->pid)) {
+            return true;
+        }
+        return swoole_process::kill($this->pid, SIGTERM);
+    }
+
+    /**
+     * @return bool
+     */
     public function isRunning()
     {
+        if (empty($this->pid)) {
+            return false;
+        }
         return swoole_process::kill($this->pid, 0);
     }
 }

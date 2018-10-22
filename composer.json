@@ -17,6 +17,7 @@
   "license": "MIT",
   "type": "library",
   "require": {
+    "ext-pcntl": "*",
     "symfony/console": "^4.1",
     "league/event": "^2.1",
     "hassankhan/config": "^2.0"

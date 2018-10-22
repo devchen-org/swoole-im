@@ -3,10 +3,7 @@
 namespace DevChen\SwooleIM\Commands;
 
 use DevChen\SwooleIM\Services\IMService;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputInterface;
 
 class IMServer extends Command
 {
@@ -29,9 +26,9 @@ class IMServer extends Command
             ->setDescription('Operate IM server.');
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function handle()
     {
-        $action = $input->getArgument('action');
+        $action = $this->getArgument('action');
 
         switch ($action) {
             case 'start':
@@ -51,17 +48,32 @@ class IMServer extends Command
 
     protected function start()
     {
-        $this->imService->start();
+        if ($this->imService->isRunning()) {
+            return $this->error('IM server is already running.');
+        }
+        $this->imService->start() ?
+            $this->info('IM server start success.') :
+            $this->error('IM server start failed.');
     }
 
 
     protected function stop()
     {
-        $this->imService->stop();
+        if (!$this->imService->isRunning()) {
+            return $this->error('IM server has stopped.');
+        }
+        $this->imService->stop() ?
+            $this->info('IM server stop success.') :
+            $this->error('IM server stop failed.');
     }
 
     protected function reload()
     {
-
+        if (!$this->imService->isRunning()) {
+            return $this->error('IM server has stopped.');
+        }
+        $this->imService->reload() ?
+            $this->info('IM server reload success.') :
+            $this->error('IM server reload failed.');;
     }
 }

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "76479380bef6cd0d585c60e0b3b3c847",
+    "content-hash": "34eee726dbd6a50a0587ea7d432fd66e",
     "packages": [
         {
             "name": "hassankhan/config",
@@ -311,7 +311,7 @@
                 "sublime",
                 "swoole"
             ],
-            "time": "2018-10-10T05:10:09+00:00"
+            "time": "2018-10-10 05:10:09"
         }
     ],
     "aliases": [],
@@ -321,6 +321,8 @@
     },
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": [],
+    "platform": {
+        "ext-pcntl": "*"
+    },
     "platform-dev": []
 }
