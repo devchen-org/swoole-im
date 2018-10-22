@@ -6,6 +6,8 @@ use DevChen\SwooleIM\Helpers\Config;
 use swoole_websocket_server;
 use swoole_websocket_frame;
 use swoole_process;
+use swoole_http_request;
+use swoole_http_response;
 
 class IMService
 {
@@ -57,30 +59,31 @@ class IMService
         $this->swooleWebSocketServer = new swoole_websocket_server($this->host, $this->port);
         $this->swooleWebSocketServer->set($this->config);
 
-        $this->swooleWebSocketServer->on('open', [$this, 'open']);
-        $this->swooleWebSocketServer->on('message', [$this, 'message']);
-        $this->swooleWebSocketServer->on('request', [$this, 'request']);
-        $this->swooleWebSocketServer->on('close', [$this, 'close']);
+        $this->swooleWebSocketServer->on('open', [$this, 'onOpen']);
+        $this->swooleWebSocketServer->on('message', [$this, 'onMessage']);
+        $this->swooleWebSocketServer->on('request', [$this, 'onRequest']);
+        $this->swooleWebSocketServer->on('close', [$this, 'onClose']);
+
 
         return $this->swooleWebSocketServer->start();
     }
 
-    public function open(swoole_websocket_server $swooleWebSocketServer, $request)
+    public function onOpen(swoole_websocket_server $swooleWebSocketServer, swoole_http_request $swooleHttpRequest)
     {
 
     }
 
-    public function request($request, $response)
+    public function onRequest(swoole_http_request $swooleHttpRequest, swoole_http_response $swooleHttpResponse)
     {
 
     }
 
-    public function message(swoole_websocket_server $swooleWebSocketServer, swoole_websocket_frame $swooleWebSocketFrame)
+    public function onMessage(swoole_websocket_server $swooleWebSocketServer, swoole_websocket_frame $swooleWebSocketFrame)
     {
 
     }
 
-    public function close($ser, $fd)
+    public function onClose($ser, $fd)
     {
 
     }
