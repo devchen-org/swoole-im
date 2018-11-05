@@ -3,6 +3,8 @@
 namespace DevChen\SwooleIM\Services;
 
 use DevChen\SwooleIM\Helpers\Config;
+use DevChen\SwooleIM\Providers\IMListenerProvider;
+use League\Event\Emitter;
 use swoole_websocket_server;
 use swoole_websocket_frame;
 use swoole_process;
@@ -31,6 +33,10 @@ class IMService
      */
     protected $pid;
 
+    /**
+     * @var Emitter
+     */
+    protected $emitter;
 
     /**
      * @var array
@@ -49,6 +55,8 @@ class IMService
         }
         $this->pid = intval(file_get_contents($pid_file));
 
+        $this->emitter = new Emitter();
+        $this->emitter->useListenerProvider(new IMListenerProvider());
     }
 
     /**
@@ -70,22 +78,22 @@ class IMService
 
     public function onOpen(swoole_websocket_server $swooleWebSocketServer, swoole_http_request $swooleHttpRequest)
     {
-
+        $this->emitter->emit('im.open', $swooleWebSocketServer, $swooleHttpRequest);
     }
 
     public function onRequest(swoole_http_request $swooleHttpRequest, swoole_http_response $swooleHttpResponse)
     {
-
+        $this->emitter->emit('im.request', $swooleHttpRequest, $swooleHttpResponse);
     }
 
     public function onMessage(swoole_websocket_server $swooleWebSocketServer, swoole_websocket_frame $swooleWebSocketFrame)
     {
-
+        $this->emitter->emit('im.message', $swooleWebSocketServer, $swooleWebSocketFrame);
     }
 
     public function onClose($ser, $fd)
     {
-
+        $this->emitter->emit('im.close', $ser, $fd);
     }
 
     /**
