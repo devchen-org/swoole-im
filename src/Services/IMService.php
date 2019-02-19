@@ -91,9 +91,9 @@ class IMService
         $this->emitter->emit('im.message', $swooleWebSocketServer, $swooleWebSocketFrame);
     }
 
-    public function onClose($ser, $fd)
+    public function onClose(swoole_websocket_server $swooleWebSocketServer, $fd, $reactor_id)
     {
-        $this->emitter->emit('im.close', $ser, $fd);
+        $this->emitter->emit('im.close', $swooleWebSocketServer, $fd, $reactor_id);
     }
 
     /**

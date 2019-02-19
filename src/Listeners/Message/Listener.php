@@ -1,32 +1,35 @@
 <?php
 
-namespace DevChen\SwooleIM\Listeners\Open;
+namespace DevChen\SwooleIM\Listeners\Message;
 
 use DevChen\SwooleIM\Listeners\InterfaceListener;
-use League\Event\AbstractEvent;
 use League\Event\AbstractListener;
 use League\Event\EventInterface;
 use swoole_websocket_server;
-use swoole_http_request;
+use swoole_websocket_frame;
 
 abstract class Listener extends AbstractListener implements InterfaceListener
 {
     /**
+     * 是swoole_server对象
+     *
      * @var swoole_websocket_server
      */
     protected $swooleWebSocketServer;
 
     /**
-     * 是一个Http请求对象，包含了客户端发来的握手请求信息
+     * 是swoole_websocket_frame对象，包含了客户端发来的数据帧信息
+     * 客户端发送的ping帧不会触发onMessage，底层会自动回复pong包
+     * onMessage回调必须被设置，未设置服务器将无法启动
      *
-     * @var swoole_http_request
+     * @var swoole_websocket_frame
      */
-    protected $swooleHttpRequest;
+    protected $swooleWebSocketFrame;
 
     public function handle(EventInterface $event, $param = null)
     {
         $this->swooleWebSocketServer = func_get_arg(1);
-        $this->swooleHttpRequest = func_get_arg(2);
+        $this->swooleWebSocketFrame = func_get_arg(2);
         return $this->execute($event);
     }
 }

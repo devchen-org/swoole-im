@@ -15,7 +15,7 @@ class IMListenerProvider implements ListenerProviderInterface
 
         ],
         'im.message' => [
-
+            \DevChen\SwooleIM\Listeners\Message\MessageListener::class,
         ],
         'im.close' => [
             \DevChen\SwooleIM\Listeners\Close\CloseListener::class,
