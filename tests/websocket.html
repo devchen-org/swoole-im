@@ -6,13 +6,54 @@
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
-<div>
+<div style="width: 50%;margin: auto">
+    <div>
+        <div id="message">
 
+        </div>
+        <div>
+            <form>
+                <textarea></textarea>
+                <input type="submit" value="发送">
+            </form>
+        </div>
+    </div>
+    <div id="websocket">
+
+    </div>
 </div>
 <script>
     $(function () {
-        var webSocket = new WebSocket('ws://swoole-im.local:8080/');
+        var webSocket = new WebSocket('ws://swoole-im.local:8080?room=2');
+        webSocket.onopen = function () {
+            append_log('WebSocket Open!');
+        };
 
+        webSocket.onmessage = function (evt) {
+            append_log('接收:' + evt.data);
+            $('<p style="text-align: left">' + evt.data + '</p>').appendTo($('#message'));
+        };
+
+        webSocket.onclose = function (evt) {
+            append_log('WebSocket Closed!');
+        };
+
+        webSocket.onerror = function (evt) {
+            append_log('WebSocket Error!');
+        };
+
+        $('form').submit(function () {
+            var content = $(this).find('textarea').val();
+            $(this).get(0).reset();
+            append_log('发送:' + content);
+            webSocket.send(content);
+            $('<p style="text-align: right">' + content + '</p>').appendTo($('#message'));
+            return false;
+        });
+
+        function append_log(txt) {
+            $('<p>' + txt + '</p>').appendTo($('#websocket'));
+        }
     })
 </script>
 </body>

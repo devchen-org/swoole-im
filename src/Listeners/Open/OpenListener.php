@@ -8,6 +8,9 @@ class OpenListener extends Listener
 {
     public function execute(EventInterface $event)
     {
-        var_dump($event->getName() . $this->swooleHttpRequest->fd);
+        $this->roomService->setFd($this->swooleHttpRequest->fd, [
+            'room_id' => $this->roomId
+        ]);
+        $this->roomService->joinRoom($this->roomId, $this->swooleHttpRequest->fd);
     }
 }

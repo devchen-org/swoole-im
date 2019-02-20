@@ -3,7 +3,7 @@
 namespace DevChen\SwooleIM\Listeners\Open;
 
 use DevChen\SwooleIM\Listeners\InterfaceListener;
-use League\Event\AbstractEvent;
+use DevChen\SwooleIM\Services\RoomService;
 use League\Event\AbstractListener;
 use League\Event\EventInterface;
 use swoole_websocket_server;
@@ -23,10 +23,26 @@ abstract class Listener extends AbstractListener implements InterfaceListener
      */
     protected $swooleHttpRequest;
 
+    /**
+     * @var RoomService
+     */
+    protected $roomService;
+
+    /**
+     * 房间号
+     *
+     * @var int
+     */
+    protected $roomId = 1;
+
     public function handle(EventInterface $event, $param = null)
     {
         $this->swooleWebSocketServer = func_get_arg(1);
         $this->swooleHttpRequest = func_get_arg(2);
+
+        $this->roomId = $this->swooleHttpRequest->get['room'] ?? 1;
+
+        $this->roomService = new RoomService();
         return $this->execute($event);
     }
 }

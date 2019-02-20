@@ -17,10 +17,12 @@
   "license": "MIT",
   "type": "library",
   "require": {
+    "php": ">=7.0",
     "ext-pcntl": "*",
     "symfony/console": "^4.1",
     "league/event": "^2.1",
-    "hassankhan/config": "^2.0"
+    "hassankhan/config": "^2.0",
+    "predis/predis": "^1.1"
   },
   "require-dev": {
     "eaglewu/swoole-ide-helper": "dev-master"

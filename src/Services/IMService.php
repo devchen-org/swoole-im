@@ -45,7 +45,8 @@ class IMService
 
     public function __construct()
     {
-        $this->config = Config::all();
+        $config = Config::all();
+        $this->config = $config['websocket'];
         $this->host = $this->config['host'];
         $this->port = $this->config['port'];
         $pid_file = $this->config['pid_file'];

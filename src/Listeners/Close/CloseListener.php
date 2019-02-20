@@ -8,7 +8,12 @@ class CloseListener extends Listener
 {
     public function execute(EventInterface $event)
     {
-        var_dump($event->getName() . $this->fd);
+        $fd = $this->roomService->getFd($this->fd);
+        $room_id = $fd['room_id'];
+
+        $this->roomService->quitRoom($room_id, $this->fd);
+        $this->roomService->delFd($this->fd);
+
     }
 
 }

@@ -3,10 +3,10 @@
 namespace DevChen\SwooleIM\Listeners\Close;
 
 use DevChen\SwooleIM\Listeners\InterfaceListener;
-use League\Event\AbstractEvent;
 use League\Event\AbstractListener;
 use League\Event\EventInterface;
 use swoole_websocket_server;
+use DevChen\SwooleIM\Services\RoomService;
 
 abstract class Listener extends AbstractListener implements InterfaceListener
 {
@@ -25,6 +25,11 @@ abstract class Listener extends AbstractListener implements InterfaceListener
     protected $reactorId;
 
     /**
+     * @var RoomService
+     */
+    protected $roomService;
+
+    /**
      * 是连接的文件描述符
      *
      * @var
@@ -36,6 +41,9 @@ abstract class Listener extends AbstractListener implements InterfaceListener
         $this->swooleWebSocketServer = func_get_arg(1);
         $this->fd = func_get_arg(2);
         $this->reactorId = func_get_arg(3);
+
+        $this->roomService = new RoomService();
+
         return $this->execute($event);
     }
 }

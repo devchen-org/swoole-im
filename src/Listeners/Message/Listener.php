@@ -7,6 +7,7 @@ use League\Event\AbstractListener;
 use League\Event\EventInterface;
 use swoole_websocket_server;
 use swoole_websocket_frame;
+use DevChen\SwooleIM\Services\RoomService;
 
 abstract class Listener extends AbstractListener implements InterfaceListener
 {
@@ -16,6 +17,11 @@ abstract class Listener extends AbstractListener implements InterfaceListener
      * @var swoole_websocket_server
      */
     protected $swooleWebSocketServer;
+
+    /**
+     * @var RoomService
+     */
+    protected $roomService;
 
     /**
      * 是swoole_websocket_frame对象，包含了客户端发来的数据帧信息
@@ -30,6 +36,9 @@ abstract class Listener extends AbstractListener implements InterfaceListener
     {
         $this->swooleWebSocketServer = func_get_arg(1);
         $this->swooleWebSocketFrame = func_get_arg(2);
+
+        $this->roomService = new RoomService();
+
         return $this->execute($event);
     }
 }

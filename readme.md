@@ -1,7 +1,18 @@
 # 基于 Swoole(WebSocket) 实现简易IM
+## 快速使用
 
+- php>=7.0.0
+- 安装Redis
+- 安装Swoole 扩展
 
-### Nginx
+```
+https://github.com/devchen-org/swoole-im.git
+cd swoole-im
+composer install
+```
+
+- Nginx
+
 ```
 upstream websocket {
     server 127.0.0.1:9501 weight=1;
@@ -25,3 +36,15 @@ server {
     }
 }
 ```
+- 运行
+
+```
+php artisan im:server start
+```
+
+## 演示
+
+`tests/websocket.html`
+
+![](doc/images/a.png)
+![](doc/images/b.png)
